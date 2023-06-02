@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+// import { persistReducer } from 'redux-persist';
+// import storage from 'redux-persist/lib/storage';
 
 const value = [
   { id: 'id-1', dataName: 'Rosie Simpson', dataNumber: '459-12-56' },
@@ -9,30 +9,32 @@ const value = [
 ];
 
 export const contactSlice = createSlice({
-  name: 'valueContacts',
-  initialState: { contacts: value },
+  name: 'contacts',
+  initialState: {
+    items: value,
+  },
 
   reducers: {
     setContactValue(state, action) {
-      state.contacts.push(action.payload);
+      state.items = [...state.items, action.payload];
     },
 
     deletContactsValue(state, action) {
-      state.contacts = action.payload;
+      state.items = action.payload;
     },
   },
 });
 
-const persistConfig = {
-  key: 'contacts',
-  storage,
-  whitelist: ['contacts'],
-};
+// const persistConfig = {
+//   key: 'items',
+//   storage,
+//   whitelist: ['items'],
+// };
 
-export const persistContactSlice = persistReducer(
-  persistConfig,
-  contactSlice.reducer
-);
+// export const persistContactSlice = persistReducer(
+//   persistConfig,
+//   contactSlice.reducer
+// );
 
-export const getContactsValue = state => state.valueContacts.contacts;
+export const getContactsValue = state => state.items;
 export const { setContactValue, deletContactsValue } = contactSlice.actions;
