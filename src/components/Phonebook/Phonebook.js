@@ -1,16 +1,21 @@
 import { useState } from 'react';
 import css from './Phonebook.module.css';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
+import { useDispatch } from 'react-redux';
+import { addContacts } from 'redux/contacts/contactsOperations';
+
 import PropTypes from 'prop-types';
 
-export default function Phonebook({ contacts, onSubmit }) {
-  const [name, setName] = useState('');
+export default function Phonebook({ contacts }) {
+  const [dataName, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const dispatch = useDispatch();
 
   const chahgeInputName = evt => {
     const checkName = evt.currentTarget.value.toLowerCase();
-    contacts.forEach(({ dataName }) => {
-      if (dataName.toLowerCase() === checkName) {
+    contacts.forEach(({ name }) => {
+      if (name.toLowerCase() === checkName) {
         alert(`${evt.currentTarget.value} is already in contacts`);
         return;
       }
@@ -19,21 +24,18 @@ export default function Phonebook({ contacts, onSubmit }) {
 
   const handleSubmitName = evt => {
     evt.preventDefault();
-    const id = nanoid();
     const { name, number } = evt.target;
-    const dataName = name.value;
-    const dataNumber = number.value;
-    const checkName = dataName.toLowerCase();
-
-    contacts.forEach(({ dataName }) => {
-      if (dataName.toLowerCase() === checkName) {
+    const valueName = name.value;
+    const valueNumber = number.value;
+    const checkName = valueName.toLowerCase();
+    contacts.forEach(({ name }) => {
+      if (name.toLowerCase() === checkName) {
         alert(`${evt.currentTarget.value} is already in contacts`);
         return;
       }
     });
-    const object = { id, dataName, dataNumber };
-    onSubmit(object);
-
+    const object = { name: valueName, phone: valueNumber };
+    dispatch(addContacts(object));
     setName('');
     setNumber('');
   };
@@ -59,7 +61,7 @@ export default function Phonebook({ contacts, onSubmit }) {
       <label className={css.label}>
         Name
         <input
-          value={name}
+          value={dataName}
           className={css.input}
           type="text"
           placeholder="Enter full name"
@@ -91,6 +93,6 @@ export default function Phonebook({ contacts, onSubmit }) {
   );
 }
 Phonebook.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  // onSubmit: PropTypes.func.isRequired,
   contacts: PropTypes.array.isRequired,
 };
