@@ -27,6 +27,7 @@ export default function Phonebook({ contacts }) {
     const valueName = name.value;
     const valueNumber = number.value;
     const checkName = valueName.toLowerCase();
+
     contactsValue.forEach(({ name }) => {
       if (name.toLowerCase() === checkName) {
         alert(`${evt.currentTarget.value} is already in contacts`);

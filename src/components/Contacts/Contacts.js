@@ -10,7 +10,6 @@ const Contacts = () => {
 
   const visibleContacts = useMemo(() => {
     const normalizeFilter = filterValue.toLowerCase();
-
     return contactsValue.filter(({ name }) =>
       name.toLowerCase().includes(normalizeFilter)
     );
@@ -20,7 +19,7 @@ const Contacts = () => {
     <ul className={css.list}>
       {visibleContacts.map(({ id, name, phone }) => (
         <li className={css.item} key={id}>
-          &#10003; {name}: {phone}{' '}
+          &#10003; {name}: {phone}
           <button
             className={css.contact_btn}
             type="submit"
