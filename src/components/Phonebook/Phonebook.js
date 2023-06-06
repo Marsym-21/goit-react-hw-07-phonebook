@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import css from './Phonebook.module.css';
 // import { nanoid } from 'nanoid';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from 'redux/contacts/contactsOperations';
-
-import PropTypes from 'prop-types';
 
 export default function Phonebook({ contacts }) {
   const [dataName, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
+  const contactsValue = useSelector(state => state.contacts.entities);
 
   const chahgeInputName = evt => {
     const checkName = evt.currentTarget.value.toLowerCase();
-    contacts.forEach(({ name }) => {
+    contactsValue.forEach(({ name }) => {
       if (name.toLowerCase() === checkName) {
         alert(`${evt.currentTarget.value} is already in contacts`);
         return;
@@ -28,7 +27,7 @@ export default function Phonebook({ contacts }) {
     const valueName = name.value;
     const valueNumber = number.value;
     const checkName = valueName.toLowerCase();
-    contacts.forEach(({ name }) => {
+    contactsValue.forEach(({ name }) => {
       if (name.toLowerCase() === checkName) {
         alert(`${evt.currentTarget.value} is already in contacts`);
         return;
@@ -92,7 +91,3 @@ export default function Phonebook({ contacts }) {
     </form>
   );
 }
-Phonebook.propTypes = {
-  // onSubmit: PropTypes.func.isRequired,
-  contacts: PropTypes.array.isRequired,
-};

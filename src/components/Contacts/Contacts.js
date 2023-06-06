@@ -1,17 +1,20 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteContacts } from 'redux/contacts/contactsOperations';
 import css from './Contacts.module.css';
 
-const Contacts = ({ contacts, onClick }) => {
+const Contacts = () => {
   const filterValue = useSelector(state => state.valueFilter);
+  const contactsValue = useSelector(state => state.contacts.entities);
+  const dispatch = useDispatch();
 
   const visibleContacts = useMemo(() => {
     const normalizeFilter = filterValue.toLowerCase();
-    return contacts.filter(({ name }) =>
+
+    return contactsValue.filter(({ name }) =>
       name.toLowerCase().includes(normalizeFilter)
     );
-  }, [contacts, filterValue]);
+  }, [contactsValue, filterValue]);
 
   return (
     <ul className={css.list}>
@@ -22,7 +25,7 @@ const Contacts = ({ contacts, onClick }) => {
             className={css.contact_btn}
             type="submit"
             id={id}
-            onClick={onClick}
+            onClick={evt => dispatch(deleteContacts(evt.target.id))}
           >
             Delet
           </button>
@@ -30,11 +33,6 @@ const Contacts = ({ contacts, onClick }) => {
       ))}
     </ul>
   );
-};
-
-Contacts.propTypes = {
-  contacts: PropTypes.array.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default Contacts;
